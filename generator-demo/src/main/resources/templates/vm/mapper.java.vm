@@ -1,0 +1,19 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import com.yx.ind.view.core.common.mapper.CommonMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ * @ClassName ${entity}Mapper
+ * @Description ${table.comment} Mapper
+ * @Author ${cfg.author}
+ * @Date ${cfg.dateTime}
+ * @Version 1.0
+ **/
+@Repository
+@Mapper
+public interface ${table.mapperName} extends CommonMapper<${entity}> {
+
+}

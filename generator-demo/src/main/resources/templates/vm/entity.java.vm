@@ -1,0 +1,36 @@
+package ${package.Entity};
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.yx.ind.view.core.annotation.QueryParamCol;
+import com.yx.ind.view.core.common.entity.CommonEntity;
+import com.yx.ind.view.core.constants.QueryParamTypeEnum;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * @ClassName ${table.entityName}
+ * @Description ${table.comment} Entity
+ * @Author ${cfg.author}
+ * @Date ${cfg.dateTime}
+ * @Version 1.0
+ **/
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@TableName("${table.name}")
+@ApiModel(value = "${cfg.moduleName}-${table.entityName}", description = "${table.comment} 实体")
+public class ${table.entityName} extends CommonEntity {
+
+    #foreach($field in ${table.fields})
+    /**
+     * 数据库字段名 ${field.name} 类型 ${field.type}
+     */
+    @ApiModelProperty(value = "${field.comment}", name = "${field.name}")
+    @QueryParamCol(queryType = QueryParamTypeEnum.EQ)
+    private ${field.propertyType} ${field.propertyName};
+
+    #end
+}

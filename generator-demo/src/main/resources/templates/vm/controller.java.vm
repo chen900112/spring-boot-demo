@@ -1,0 +1,35 @@
+package ${package.Controller};
+
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+import com.yx.ind.view.core.common.controller.CommonController;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * @ClassName ${entity}Controller
+ * @Description ${table.comment} Controller
+ * @Author ${cfg.author}
+ * @Date ${cfg.dateTime}
+ * @Version 1.0
+ **/
+@RestController
+@RequestMapping(value = "/${table.entityPath}")
+@Api(value = "${cfg.moduleName}-${table.controllerName}", tags = "${table.comment} Controller" )
+public class ${table.controllerName} extends CommonController<${entity}> {
+    private final ${table.serviceName} ${table.entityPath}Service;
+
+    @Autowired
+    public ${entity}Controller(${table.serviceName} ${table.entityPath}Service) {
+        this.${table.entityPath}Service = ${table.entityPath}Service;
+    }
+
+    /**
+    * 初始化Service
+    */
+    @Override
+    public void init() {
+        super.init(${table.entityPath}Service);
+    }
+}

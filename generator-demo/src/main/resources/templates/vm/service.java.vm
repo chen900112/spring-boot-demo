@@ -1,0 +1,26 @@
+package ${package.Service};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import com.yx.ind.view.core.common.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * @ClassName ${entity}Service
+ * @Description ${table.comment} Service
+ * @Author ${cfg.author}
+ * @Date ${cfg.dateTime}
+ * @Version 1.0
+ **/
+@Service
+public class ${table.serviceName} extends CommonService<${table.mapperName}, ${entity}> {
+    private final ${table.mapperName} ${table.entityPath}Mapper;
+
+    @Autowired
+    public ${table.serviceName}(${table.mapperName} ${table.entityPath}Mapper) {
+        this.${table.entityPath}Mapper = ${table.entityPath}Mapper;
+    }
+
+}
