@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @Configuration
+// 开启权限
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
@@ -38,6 +39,8 @@ public class SecurityConfig {
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+
+                // 添加认证和授权异常回调
                 .exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
@@ -45,8 +48,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/admin/login").anonymous()
 
-                // 资源放行
-
+                // swagger knife4j资源放行
                 .antMatchers("/favicon.ico").anonymous()
                 .antMatchers("/swagger-ui/**").anonymous()
                 .antMatchers("/swagger-resources/**").anonymous()
@@ -58,6 +60,7 @@ public class SecurityConfig {
                 .antMatchers("/webjars/**").anonymous()
                 .anyRequest().authenticated()
                 .and()
+                // 添加jwt 顾虑器
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

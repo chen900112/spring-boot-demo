@@ -26,8 +26,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,14 +59,14 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsUserPo> 
     @Override
     public String login(UmsAdminLoginDto umsAdminLoginDto) {
 
+        // 使用 Security 中的UsernamePasswordAuthenticationToken -> authenticationToken
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(umsAdminLoginDto.getUserName(),umsAdminLoginDto.getPassword());
+        // 在SecurityConfig 中配置 AuthenticationManager 会调用 loadUserByUsername
         Authentication authentication =  authenticationManager.authenticate(authenticationToken);
 
-        if(Objects.isNull(authentication)){
-            throw new RuntimeException("登录失败");
-        }
         SecurityUserDetailsBo securityUserDetailsBo = (SecurityUserDetailsBo) authentication.getPrincipal();
         String userFlag = securityUserDetailsBo.getUsername().toString();
+        // 生成token
         String userToken = jwtUtil.generateToken(userFlag);
 
         String key = REDIS_DATABASE  + ":" + securityUserDetailsBo.getUsername();
@@ -114,14 +112,16 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsUserPo> 
         LambdaQueryWrapper<UmsUserPo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UmsUserPo::getUserName,username);
         UmsUserPo umsUserPo  =  this.getOne(queryWrapper);
-
+        // 如果用户不存在
         if(Objects.isNull(umsUserPo)){
-            throw new RuntimeException("错误啦");
+            throw new UsernameNotFoundException("用户不存在");
         }
-
+        // 查询权限
         List<UmsPermissionPo> permissionList = umsPermissionMapper.getPermissionList(umsUserPo.getUserId());
 
         return new SecurityUserDetailsBo(umsUserPo,permissionList);
+
+
     }
 
 

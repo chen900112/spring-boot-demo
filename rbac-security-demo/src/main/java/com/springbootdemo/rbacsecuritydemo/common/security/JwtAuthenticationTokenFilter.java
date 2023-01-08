@@ -61,17 +61,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                          SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                      }else {
-                         throw new ExpiredJwtException("用户未登录");
+                         throw new ExpiredJwtException("redis 未查询到");
                      }
                  } else {
-                     throw new ExpiredJwtException("验证token异常");
+                     throw new ExpiredJwtException("token失效或异常");
                  }
              }else {
-                 throw new ExpiredJwtException("token 异常");
+                 throw new ExpiredJwtException("header中的token异常");
              }
          }
          filterChain.doFilter(request,response);
      }catch (AuthenticationException ex){
+         // 目前得知 doFilterInternal 中抛出异常的最佳方式, AuthenticationEntryPoint 可以获得 ex.message,
+         // message 可以设置成 ResultCode,从而在AuthenticationEntryPoint中枚举 异常message
          SecurityContextHolder.clearContext();
          this.restAuthenticationEntryPoint.commence(request, response, ex);
      }
