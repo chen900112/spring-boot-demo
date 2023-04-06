@@ -28,7 +28,11 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
 
     }
+    @Bean
+    AuthenticationManager authenticationManager1(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
 
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -30,7 +30,7 @@ public class UmsAdminController {
     @ApiOperation(value = "登录用户")
     @RequestMapping(value = "/info", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult info() {
+    public CommonResult<UmsUserVo> info() {
         UmsUserVo umsUserVo =  umsAdminService.info();
         return CommonResult.success(umsUserVo);
     }
