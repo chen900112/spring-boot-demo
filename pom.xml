@@ -15,6 +15,8 @@
     <modules>
         <module>rbac-security-demo</module>
         <module>generator-demo</module>
+        <module>rabbitmq-demo</module>
+        <module>demo-common</module>
     </modules>
 
     <properties>
@@ -56,6 +58,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version> 5.8.9</version>
+            </dependency>
+            <dependency>
+                <groupId>com.springbootdemo</groupId>
+                <artifactId>demo-common</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
