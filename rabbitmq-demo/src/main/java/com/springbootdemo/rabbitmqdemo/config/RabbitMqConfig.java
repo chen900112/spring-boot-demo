@@ -14,7 +14,7 @@ public class RabbitMqConfig {
         return ExchangeBuilder
                 .fanoutExchange("exchange.fanout")
                 .autoDelete()
-                .durable(true)
+                .durable(false) // 不持久化
                 .build();
     }
 
@@ -46,7 +46,6 @@ public class RabbitMqConfig {
         return ExchangeBuilder
                 .directExchange("exchange.direct")
                 .autoDelete()
-                .durable(true)
                 .build();
     }
 
@@ -60,14 +59,12 @@ public class RabbitMqConfig {
         return QueueBuilder.durable("queue.direct.b").autoDelete().build();
     }
 
-
     @Bean
     Binding directBindingInfo(DirectExchange directExchange, Queue directQueueA){
         return BindingBuilder
                 .bind(directQueueA)
                 .to(directExchange).with("route.direct.info");
     }
-
 
     @Bean
     Binding directBindingAInfo(DirectExchange directExchange, Queue directQueueA){
@@ -76,14 +73,12 @@ public class RabbitMqConfig {
                 .to(directExchange).with("route.direct.info");
     }
 
-
     @Bean
     Binding directBindingAError(DirectExchange directExchange, Queue directQueueA){
         return BindingBuilder
                 .bind(directQueueA)
                 .to(directExchange).with("route.direct.error");
     }
-
 
     @Bean
     Binding directBindingAWarning(DirectExchange directExchange, Queue directQueueA){
@@ -92,13 +87,57 @@ public class RabbitMqConfig {
                 .to(directExchange).with("route.direct.warning");
     }
 
-
     @Bean
     Binding directBindingBError(DirectExchange directExchange, Queue directQueueB){
         return BindingBuilder
                 .bind(directQueueB)
                 .to(directExchange).with("route.direct.error");
     }
+
+    //  ---------主题交换机---------------------------------------------------------------------------------
+
+    @Bean
+    TopicExchange topicExchange() {
+        return ExchangeBuilder
+                .topicExchange("exchange.topic")
+                .autoDelete()
+                .build();
+    }
+
+    @Bean
+    public Queue topicQueueA() {
+
+        return QueueBuilder.nonDurable("queue.topic.a").autoDelete().build();
+    }
+
+    @Bean
+    public Queue topicQueueB() {
+        return QueueBuilder.nonDurable("queue.topic.b").autoDelete().build();
+    }
+
+    @Bean
+    Binding topicBindingOrange(DirectExchange topicExchange, Queue topicQueueA){
+        return BindingBuilder
+                .bind(topicQueueA)
+                .to(topicExchange).with("*.orange.*");
+    }
+
+
+    @Bean
+    Binding topicBindingRabbit(TopicExchange topicExchange, Queue topicQueueB){
+        return BindingBuilder
+                .bind(topicQueueB)
+                .to(topicExchange).with("*.*.rabbit");
+    }
+
+    @Bean
+    Binding topicBindingLazy(TopicExchange topicExchange, Queue topicQueueB){
+        return BindingBuilder
+                .bind(topicQueueB)
+                .to(topicExchange).with("lazy.#");
+    }
+
+
 
 
 }
